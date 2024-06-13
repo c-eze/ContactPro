@@ -12,12 +12,12 @@ namespace ContactPro.Models
         public string? AppUserID { get; set; }
 
         [Required]
-        [Display(Name = "First NAme")]
+        [Display(Name = "First Name")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
         public string? FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Last NAme")]
+        [Display(Name = "Last Name")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 2)]
         public string? LastName { get; set; }
 
@@ -47,7 +47,11 @@ namespace ContactPro.Models
         [EmailAddress]
         public string? Email { get; set; }
 
-        [Required]
+		[Required]
+		[Phone]
+		public string? PhoneNumber { get; set; }
+
+		[Required]
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
 
