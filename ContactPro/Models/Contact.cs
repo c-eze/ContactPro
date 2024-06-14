@@ -48,7 +48,7 @@ namespace ContactPro.Models
         public string? Email { get; set; }
 
 		[Required]
-		[Phone]
+		[Display(Name = "Phone Number")]
 		public string? PhoneNumber { get; set; }
 
 		[Required]
