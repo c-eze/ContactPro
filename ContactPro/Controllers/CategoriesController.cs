@@ -62,7 +62,7 @@ namespace ContactPro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppUserId,MyProperty")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,AppUserId,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace ContactPro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,MyProperty")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,Name")] Category category)
         {
             if (id != category.Id)
             {

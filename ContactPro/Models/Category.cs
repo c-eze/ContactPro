@@ -11,7 +11,7 @@ namespace ContactPro.Models
 
         [Required]
         [Display(Name = "Category Name")]
-        public string? MyProperty { get; set; }
+        public string? Name { get; set; }
 
         //Virtuals
         public virtual AppUser? AppUser { get; set; }
