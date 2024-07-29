@@ -203,7 +203,7 @@ namespace ContactPro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserID,FirstName,LastName,BirthDate,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,Created,ImageFile,ImageData,ImageType")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserID,FirstName,LastName,BirthDate,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,Created,ImageFile,ImageData,ImageType")] Contact contact, List<int> CategoryList)
         {
             if (id != contact.Id)
             {
@@ -229,6 +229,21 @@ namespace ContactPro.Controllers
 
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
+
+                    //save our categories
+                    //remove the current categories
+                    List<Category> oldCategories = (await _addressBookService.GetContactCategoriesAsync(contact.Id)).ToList();
+                    foreach (var category in oldCategories)
+                    {
+                        await _addressBookService.RemoveContactFromCategoryAsync(category.Id, contact.Id);
+                    }
+
+                    //add the selected categories
+                    foreach (int categoryid in CategoryList)
+                    {
+                        await _addressBookService.AddContactToCategoryAsync(categoryid, contact.Id);
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
