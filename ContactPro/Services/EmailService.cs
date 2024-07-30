@@ -22,6 +22,13 @@ namespace ContactPro.Services
 
             MimeMessage newEmail = new();
 
+            newEmail.Sender = MailboxAddress.Parse(emailSender);
+
+            foreach (var emailAddress in email.Split(";"))
+            {
+                newEmail.To.Add(MailboxAddress.Parse(emailAddress));
+            }
+
             newEmail.Subject = subject;
 
             BodyBuilder emailBody = new();
