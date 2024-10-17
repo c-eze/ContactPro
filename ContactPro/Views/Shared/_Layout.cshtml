@@ -44,9 +44,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
                         <li class="nav-item">
@@ -76,7 +73,7 @@
             <div class="col">
                 <div class="row align-items-center gy-2">
                     <div class="col d-flex justify-content-center justify-content-md-start order-last order-md-first copyright">
-                        &copy; 2024 Chikere Ezekannagha All Rights Reserved
+                        &copy; 2024 Chikere All Rights Reserved
                     </div>
                     <div class="col d-flex justify-content-center">
                         <img src="/img/Kinext.png" height="50">

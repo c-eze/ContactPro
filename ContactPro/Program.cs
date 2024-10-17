@@ -6,8 +6,10 @@ using ContactPro.Services;
 using ContactPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ContactPro.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Add services to the container.
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -19,11 +21,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddDefaultUI()
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 //custom Services
+builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IAddressBookService, AddressBookService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
@@ -33,8 +39,14 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 var app = builder.Build();
 var scope = app.Services.CreateScope();
 
+//pull out registered DataService class
+var dataService = scope.ServiceProvider.GetService<DataService>();
+
 //get the database update with the latest migrations
 await DataHelper.ManageDataAsync(scope.ServiceProvider);
+
+//add users into the system
+await dataService.ManageDataAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

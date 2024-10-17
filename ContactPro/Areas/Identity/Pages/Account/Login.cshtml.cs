@@ -102,11 +102,25 @@ namespace ContactPro.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoLoginEmail = null)
         {
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (demoLoginEmail is not null && demoLoginEmail.Equals("DemoUser"))
+            {
+                Input.Email = "demouser@mailinator.com";
+                Input.Password = "Learntocode1!";
+                Input.RememberMe = true;
+
+                var userResult = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (userResult.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return LocalRedirect(returnUrl);
+                }
+            }
 
             if (ModelState.IsValid)
             {
