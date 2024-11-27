@@ -12,8 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//var connectionString = builder.Configuration.GetSection("pgSettings")["pgConnection"];
 var connectionString = ConnectionHelper.GetConnectionString(builder.Configuration);
 
 

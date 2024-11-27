@@ -11,12 +11,15 @@ namespace ContactPro.Services
         private List<Category> _categories;
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _configuration;
 
         public DataService(ApplicationDbContext dbContext,
-            UserManager<AppUser> userManager)
+                           UserManager<AppUser> userManager,
+                           IConfiguration configuration)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task ManageDataAsync()
@@ -33,7 +36,17 @@ namespace ContactPro.Services
                 return;
             }
 
-            //Step 1: Create a new instance of BlogUser
+            //Step 1: Create new instances of User
+            var demoAdmin = new AppUser()
+            {
+                Email = "demoadmin@mailinator.com",
+                UserName = "demoadmin@mailinator.com",
+                FirstName = "Mary",
+                LastName = "DemoAdmin",
+                PhoneNumber = "(800)555-1212",
+                EmailConfirmed = true
+            }; 
+
             var demoUser = new AppUser()
             {
                 Email = "demouser@mailinator.com",
@@ -44,13 +57,15 @@ namespace ContactPro.Services
                 EmailConfirmed = true
             };
 
-            //Step 2: Use the UserManager to create a new user that is defined by adminUser
-            await _userManager.CreateAsync(demoUser, "Learntocode1!");
+            //Step 2: Use the UserManager to create a new user that is defined by demoAdmin and demoUser
+            string password = Environment.GetEnvironmentVariable("UserPassword") ?? _configuration.GetSection("User")["Password"];
+            await _userManager.CreateAsync(demoAdmin, password);
+            await _userManager.CreateAsync(demoUser, password);
 
             await _dbContext.SaveChangesAsync();
 
-            List<Contact> contacts = await GenerateContacts(demoUser);
-            List<Category> categories = await GenerateCategories(demoUser);
+            List<Contact> contacts = await GenerateContacts(demoAdmin);
+            List<Category> categories = await GenerateCategories(demoAdmin);
 
             //Assign category to each contact randomly
             Random random = new();

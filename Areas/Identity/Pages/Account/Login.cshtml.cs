@@ -22,11 +22,15 @@ namespace ContactPro.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IConfiguration _configuration;
 
-        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<AppUser> signInManager,
+                          ILogger<LoginModel> logger,
+                          IConfiguration configuration)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -104,14 +108,28 @@ namespace ContactPro.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoLoginEmail = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Contacts/Index");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (demoLoginEmail is not null && demoLoginEmail.Equals("DemoAdmin"))
+            {
+                Input.Email = "demoadmin@mailinator.com";
+                Input.Password = Environment.GetEnvironmentVariable("UserPassword") ?? _configuration.GetSection("User")["Password"];
+                Input.RememberMe = true;
+
+                var userResult = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (userResult.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return LocalRedirect(returnUrl);
+                }
+            }
 
             if (demoLoginEmail is not null && demoLoginEmail.Equals("DemoUser"))
             {
                 Input.Email = "demouser@mailinator.com";
-                Input.Password = "Learntocode1!";
+                Input.Password = Environment.GetEnvironmentVariable("UserPassword") ?? _configuration.GetSection("User")["Password"];
                 Input.RememberMe = true;
 
                 var userResult = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
