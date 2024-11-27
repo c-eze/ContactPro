@@ -82,11 +82,11 @@ main {
     background-color: var(--cf-primaryColorLight);
 }
 
-.content {
+/*.content {
     flex: 1 0 auto;
     padding-top: 7.5rem;
     padding-bottom: 2.5rem;
-}
+}*/
 
 .heroCard {
     min-height: 100%;
