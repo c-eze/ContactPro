@@ -15,6 +15,9 @@
 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBackdrop">
 		Edit
 	</button>
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+		Delete
+	</button>
 	<dl class="row">
 		<dt class="col-sm-2">
 			@Html.DisplayNameFor(model => model.FirstName)
@@ -101,11 +104,10 @@
 	<a asp-action="Index">Back to List</a>
 </div>
 
-<!-- Modal -->
-
+<!-- Edit Modal -->
 <form asp-action="Edit" asp-controller="Contacts" enctype="multipart/form-data" method="post">
 	<div class="modal fade" id="editBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-scrollable">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="editBackdropLabel">Update Contact</h1>
@@ -200,3 +202,21 @@
 	</div>
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="deleteModalLabel">Delete contact</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>You are about to delete this contact, are you sure?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+				<a class="btn btn-danger" asp-action="Delete" asp-controller="Contacts">Delete</a>
+			</div>
+		</div>
+	</div>
+</div>
