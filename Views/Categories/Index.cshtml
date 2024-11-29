@@ -9,12 +9,14 @@
 	@foreach (var category in Model)
 	{
 		<div class="col">
-			<div class="card text-center mb-3" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title">@category.Name</h5>
-					<a asp-action="Details" asp-route-id="@category.Id">
+			<div class="card mb-3" style="width: 18rem;">
+				<a asp-action="Details" asp-route-id="@category.Id">
+					<div class="card-body text-center">
+						<h5 class="card-title">@category.Name</h5>
 						<p class="card-text">@category.Contacts.Count()</p>
-					</a>
+					</div>
+				</a>
+				<div class="card-footer">
 					<ul class="d-flex justify-content-center list-unstyled">
 						<li class="me-3">
 							<a class="editIcons" asp-action="Edit" asp-route-id="@category.Id"><i class="bi bi-pencil-fill"></i></a>

@@ -86,14 +86,15 @@
 						</ul>
 					</div>
 				</div>
-				<div class="offset-md-3 col-md-9">
-					<section class="container">
+				<div class="d-flex flex-column offset-md-3 col-md-9 vh-100">
+					<section class="container mb-auto">
 						@RenderBody()
 					</section>
-					<footer>
-						<div class="row align-items-center py-2">
-							<div class="col">
-								<div class="row align-items-center gy-2">
+					<hr />
+					<footer class="row align-items-center gy-2">
+						@* <div class="row align-items-center py-2"> *@
+							@* <div class="col"> *@
+								@* <div class="row align-items-center gy-2"> *@
 									<div class="col d-flex justify-content-center justify-content-md-start order-last order-md-first copyright">
 										&copy; 2024 Chikere All Rights Reserved
 									</div>
@@ -105,9 +106,9 @@
 										<a href="https://x.com/chikeredev" target="_blank" class="socialicons"><i class="bi bi-twitter-x p-2"></i></a>
 										<a href="https://www.youtube.com/channel/UChSaNW2QTbPUafJjWegP9aA" target="_blank" class="socialicons"><i class="bi bi-youtube p-2"></i></a>
 									</div>
-								</div>
-							</div>
-						</div>
+								@* </div> *@
+							@* </div> *@
+						@* </div> *@
 					</footer>
 				</div>
 			</div>
