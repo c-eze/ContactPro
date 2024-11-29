@@ -11,6 +11,7 @@ using ContactPro.Data;
 using ContactPro.Models;
 using ContactPro.Models.ViewModels;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using ContactPro.Enums;
 
 namespace ContactPro.Controllers
 {
@@ -39,12 +40,40 @@ namespace ContactPro.Controllers
 
             var categories = await _context.Categories.Where(c => c.AppUserId == appUserId)
                                                 .Include(c => c.AppUser)
+												.Include(c => c.Contacts)
 												.ToListAsync();
             
             return View(categories);
         }
 
-        [Authorize]
+		// GET: Contacts/Details/5
+		[Authorize]
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null || _context.Categories == null)
+			{
+				return NotFound();
+			}
+
+			string appUserId = _userManager.GetUserId(User);
+
+			Category category = await _context.Categories
+									  .Include(c => c.Contacts)
+									  .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+
+			if (category == null)
+			{
+				return NotFound();
+			}
+
+
+			//ViewData["StatesList"] = new SelectList(Enum.GetValues(typeof(States)).Cast<States>().ToList());
+			//ViewData["CategoryList"] = new MultiSelectList(await _addressBookService.GetUserCategoriesAsync(appUserId), "Id", "Name", await _addressBookService.GetContactCategoryIdsAsync(contact.Id));
+
+			return View(category);
+		}
+
+		[Authorize]
         public async Task<IActionResult> EmailCategory (int id)
         {
             string appUserId = _userManager.GetUserId(User);
