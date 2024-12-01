@@ -10,7 +10,7 @@
 	{
 		<div class="col">
 			<div class="card mb-3" style="width: 18rem;">
-				<a asp-action="Details" asp-route-id="@category.Id">
+				<a class="text-decoration-none" asp-action="Details" asp-route-id="@category.Id">
 					<div class="card-body text-center">
 						<h5 class="card-title">@category.Name</h5>
 						<p class="card-text">@category.Contacts.Count()</p>

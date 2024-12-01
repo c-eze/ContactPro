@@ -90,10 +90,12 @@ namespace ContactPro.Services
             {
                 _categories = new List<Category>()
                 {
-                    new Category(){AppUserId = user.Id, Name = "Work"},
+                    new Category(){AppUserId = user.Id, Name = "Coworkers"},
                     new Category(){AppUserId = user.Id, Name = "Family"},
-                    new Category(){AppUserId = user.Id, Name = "Friends"}
-                };
+                    new Category(){AppUserId = user.Id, Name = "Friends"},
+					new Category(){AppUserId = user.Id, Name = "Business"},
+					new Category(){AppUserId = user.Id, Name = "Church"}
+				};
             }
 
             return _categories;
@@ -116,24 +118,11 @@ namespace ContactPro.Services
                         State = Enums.States.TX,
                         Email = "jsmith@mailinator.com",
                         ZipCode = 21000,
-                        PhoneNumber = "0000000000",
-                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//6.png")),
+                        PhoneNumber = "8005552342", 
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//6.png")), 
                         ImageType = ".png" },
 
-                    new Contact() {
-                        AppUserID = user.Id,
-                        FirstName = "Erin",
-                        LastName = "Doe",
-                        Address1 = "1 Katz Place",
-                        BirthDate = new DateTime(1976, 01, 02),
-                        City = "Charleston",
-                        State = Enums.States.WV,
-                        Email = "edoe@mailinator.com",
-                        ZipCode = 18701,
-                        PhoneNumber = "0000000000",
-                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//8.png")),
-                        ImageType = ".png" },
-
+                    
                     new Contact() {
                         AppUserID = user.Id,
                         FirstName = "Ty",
@@ -144,7 +133,7 @@ namespace ContactPro.Services
                         State = Enums.States.VA,
                         Email = "tlong@mailinator.com",
                         ZipCode = 18701,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005557984",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//1.png")),
                         ImageType = ".png" },
 
@@ -158,7 +147,7 @@ namespace ContactPro.Services
                         State = Enums.States.FL,
                         Email = "gtorres@mailinator.com",
                         ZipCode = 33054,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005559592", 
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//10.png")),
                         ImageType = ".png" },
 
@@ -172,7 +161,7 @@ namespace ContactPro.Services
                         State = Enums.States.MN,
                         Email = "mquirk@mailinator.com",
                         ZipCode = 55378,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005552903",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//7.png")),
                         ImageType = ".png" },
 
@@ -186,7 +175,7 @@ namespace ContactPro.Services
                         State = Enums.States.IN,
                         Email = "pleong@mailinator.com",
                         ZipCode = 46060,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005550602",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//9.png")),
                         ImageType = ".png" },
 
@@ -200,7 +189,8 @@ namespace ContactPro.Services
                         State = Enums.States.CT,
                         Email = "lreddick@mailinator.com",
                         ZipCode = 06902,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005550378",
+                    //Replace
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//2.png")),
                         ImageType = ".png" },
 
@@ -212,25 +202,12 @@ namespace ContactPro.Services
                         BirthDate = new DateTime(1967, 02, 19),
                         City = "Frankfort",
                         State = Enums.States.KY,
+                    //Replace
                         Email = "nfillion@mailinator.com",
                         ZipCode = 40601,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005553245",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//3.png")),
-                        ImageType = ".png" },
-
-                    new Contact() {
-                        AppUserID = user.Id,
-                        FirstName = "Neil",
-                        LastName = "Kaplan",
-                        Address1 = "679 N. Annadale Dr.",
-                        BirthDate = new DateTime(1978, 05, 02),
-                        City = "Hephzibah",
-                        State = Enums.States.GA,
-                        Email = "nkaplan@mailinator.com",
-                        ZipCode = 30815,
-                        PhoneNumber = "0000000000",
-                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//4.png")),
-                        ImageType = ".png" },
+                        ImageType = ".png" }, 
 
                     new Contact() {
                         AppUserID = user.Id,
@@ -242,7 +219,7 @@ namespace ContactPro.Services
                         State = Enums.States.FL,
                         Email = "nnorth@mailinator.com",
                         ZipCode = 32137,
-                        PhoneNumber = "0000000000",
+                        PhoneNumber = "8005552953",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//5.png")),
                         ImageType = ".png" }
                 };
