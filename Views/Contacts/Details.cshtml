@@ -7,101 +7,68 @@
 	ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div>
+	<div>
+		<a asp-action="Index"><i class="bi bi-chevron-left"></i>All Contacts</a>
+	</div>
+	<div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="flex-grow-1">@Model.FullName</h1>
+		<div class="btn-group me-2">
+			<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editBackdrop">
+				<i class="bi bi-pencil"></i>Edit
+			</button>
+			<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+				<i class="bi bi-trash3"></i>Delete
+			</button>
+		</div>
+	</div>
+	<div class="row ">
+		<div class="col-12 col-md-4 col-lg-4 mb-3">
+			<div class="square-img-container">
+				@if (Model.ImageData != null)
+				{
+					<img id="contactImage" class="square-img" src="@ImageService.ConvertByteArrayToFile(Model.ImageData, Model.ImageType)" />
+				}
+				else
+				{
+					<img id="contactImage" class="square-img" src="~/img/DefaultContactImage.png">
+				}
+			</div>
+		</div>
 
-<div>
-	<h4>Contact</h4>
-	<hr />
-	<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editBackdrop">
-		Edit
-	</button>
-	<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteModal">
-		Delete
-	</button>
-	<dl class="row">
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.FirstName)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.FirstName)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.LastName)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.LastName)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.BirthDate)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.BirthDate)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Address1)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Address1)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Address2)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Address2)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.City)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.City)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.State)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.State)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.ZipCode)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.ZipCode)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Email)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Email)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Created)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Created)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.ImageData)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.ImageData)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.ImageType)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.ImageType)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.AppUser)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.AppUser.Id)
-		</dd>
-	</dl>
-</div>
-<div>
-	<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-	<a asp-action="Index">Back to List</a>
+		<div class="col-12 col-md-8 col-lg-8">
+			<dl class="row">
+				<dt class="col-1 col-sm-1"><i class="bi bi-cake2-fill"></i></dt>
+				<dd class="col-11 col-sm-11">
+					@Html.DisplayFor(model => model.BirthDate)
+				</dd>
+				<dt class="col-1 col-sm-1"><i class="bi bi-geo-alt-fill"></i></dt>
+				<dd class="col-11 col-sm-11">
+					@Model.Address1 @Model.Address2
+				</dd>
+				<dt class="col-1 col-sm-1"></dt>
+				<dd class="col-11 col-sm-11">
+					@Model.City, @Model.State @Model.ZipCode
+				</dd>
+				<dt class="col-1 col-sm-1"></dt>
+				<dd class="col-11 col-sm-11">
+					@Model.ZipCode
+				</dd>
+			</dl>
+			<div class="row row-cols-1">
+				<div class="col mb-3">
+					<a asp-controller="Contacts" asp-action="EmailContact" asp-route-id="@Model.Id" class="btn btn-lg btn-primary">
+						<i class="bi bi-envelope-fill"></i>&emsp;@Model.Email
+					</a>
+				</div>
+				<div class="col">
+					<a href="tel:@Model.PhoneNumber" class="btn btn-lg btn-primary">
+						<i class="bi bi-telephone-fill"></i>&emsp;@Model.PhoneNumber
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Edit Modal -->
@@ -113,7 +80,7 @@
 					<h1 class="modal-title fs-5" id="editBackdropLabel">Update Contact</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body"> 
+				<div class="modal-body">
 					<div class="row g-3 p-2">
 						<input type="hidden" asp-for="Id" />
 						<input type="hidden" asp-for="AppUserID" />
@@ -191,7 +158,7 @@
 							<input asp-for="BirthDate" class="form-control" />
 							<span asp-validation-for="BirthDate" class="text-danger"></span>
 						</div>
-					</div> 
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -202,7 +169,7 @@
 	</div>
 </form>
 
-<!-- Modal -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">

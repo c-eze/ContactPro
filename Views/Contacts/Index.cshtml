@@ -20,10 +20,10 @@
 	</div>
 </div>
 <div class="row g-2">
-	<div class="col col-md-2 sideNav">
+	<div class="col-12 col-md-2 sideNav">
 		<form asp-action="Index" asp-controller="Contacts">
 			<div class="mt-5">
-				<label class="form-label fw-bold">CATEGORY FILTER</label>
+				<label class="form-label fw-bold">GROUP FILTER</label>
 
 				<select name="categoryId" asp-items="@ViewBag.CategoryId" class="form-control"
 						onchange="this.form.submit()" onfocus="this.selectedIndex=-1;this.blur();">
@@ -33,7 +33,7 @@
 		</form>
 	</div>
 	<div class="col col-md-10">
-		<div class="row row-cols-md-3 g-3">
+		<div class="row row-cols-1 row-cols-md-3 g-3">
 			@foreach (var contact in Model)
 			{
 				<div class="col">

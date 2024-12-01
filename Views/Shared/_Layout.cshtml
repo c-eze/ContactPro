@@ -196,23 +196,17 @@
 							<a class="nav-link" asp-area="" asp-controller="Contacts" asp-action="Index">Everyone</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+							<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Groups</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">My Profile</a>
-						</li>
-						@*  @if (User.IsInRole(nameof(Roles.Admin)))
-						{ *@
-						<li class="nav-item">
-							<a class="nav-link fw-bold" asp-area="" asp-controller="Categories" asp-action="Index">+ Manage Users</a>
-						</li>
+						</li> 
 						<li class="nav-item">
 							<a class="nav-link fw-bold" asp-area="" asp-controller="Contacts" asp-action="Create">+ New Contact</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link fw-bold" asp-area="" asp-controller="Categories" asp-action="Create">+ New Category</a>
-						</li>
-						@* } *@
+							<a class="nav-link fw-bold" asp-area="" asp-controller="Categories" asp-action="Create">+ New Group</a>
+						</li> 
 						</ul>
 					</div>
 				</div>

@@ -41,7 +41,7 @@ body {
         background-color: var(--cf-primaryColor);
     }
 
-.btn-primary {
+/*.btn-primary {
     color: white !important;
     background-color: var(--cf-primaryColor) !important;
     border-color: var(--cf-secondary-color);
@@ -56,7 +56,7 @@ body {
     .btn-primary:visited,
     .btn-primary:focus {
         filter: brightness(1.2) !important;
-    }
+    }*/
 
 .btnlinks {
     width: 7rem;
@@ -141,11 +141,11 @@ main {
 .editIcons {
     font-size: 1.5rem;
     opacity: .9;
-    color: var(--cf-primaryColorDark);
+    /*color: var(--cf-primaryColorDark);*/
 }
 
     .editIcons:hover {
-        color: var(--cf-primaryColor);
+        /*color: var(--cf-primaryColor);*/
         font-weight: bold;
         opacity: 1;
         cursor: pointer;
@@ -158,22 +158,22 @@ main {
 
 .footer {
     flex-shrink: 0;
-    background-color: var(--cf-secondaryColor);
+    /*background-color: var(--cf-secondaryColor);*/
 }
 
 .copyright {
-    color: var(--cf-primaryColorDark);
+    /*color: var(--cf-primaryColorDark);*/
     font-size: .9rem;
 }
 
 .socialicons {
-    color: var(--cf-primaryColorDark);
+    /*color: var(--cf-primaryColorDark);*/
     opacity: .9;
     font-size: 2rem;
 }
 
     .socialicons:hover {
-        color: var(--cf-primaryColor);
+        /*color: var(--cf-primaryColor);*/
         opacity: 1;
         cursor: pointer;
     }
