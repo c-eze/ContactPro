@@ -26,7 +26,14 @@
 			<div class="col">
 				<div class="card mb-3 h-100">
 					<a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id">
-						<img id="contactImage" class="square-img" src="@ImageService.ConvertByteArrayToFile(contact.ImageData, contact.ImageType)" />
+						@if (contact.ImageData != null)
+						{
+							<img id="contactImage" class="card-img-top" src="@ImageService.ConvertByteArrayToFile(contact.ImageData, contact.ImageType)" />
+						}
+						else
+						{
+							<img id="contactImage" class="card-img-top" src="~/img/DefaultContactImage.png">
+						}
 					</a>
 					<div class="card-body">
 						<div class="d-flex align-items-center">
