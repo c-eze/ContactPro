@@ -9,7 +9,7 @@
 
 <h1>My Contacts</h1>
 <div class="row g-2">
-	<div class="col col-md-4">
+	<div class="col col-md-4 mb-3">
 		<form asp-action="SearchContacts" asp-controller="Contacts">
 			<div class="input-group">
 				<input class="form-control" type="search" name="searchString"
@@ -20,9 +20,9 @@
 	</div>
 </div>
 <div class="row g-2">
-	<div class="col-12 col-md-2 sideNav">
+	<div class="col-12 col-md-2 bg-body-tertiary sideNav">
 		<form asp-action="Index" asp-controller="Contacts">
-			<div class="mt-5">
+			<div class="mt-2">
 				<label class="form-label fw-bold">GROUP FILTER</label>
 
 				<select name="categoryId" asp-items="@ViewBag.CategoryId" class="form-control"
@@ -39,12 +39,13 @@
 				<div class="col">
 					<div class="card mb-3 h-100">
 						<a asp-action="Details" asp-route-id="@contact.Id">
-						<img class="card-img-top" src='@ImageService.ConvertByteArrayToFile(contact.ImageData!, contact.ImageType!)' alt="...">
+							<img class="card-img-top" src='@ImageService.ConvertByteArrayToFile(contact.ImageData!, contact.ImageType!)' alt="...">
 						</a>
 						<div class="card-body">
-							<h5 class="card-title">@Html.DisplayFor(modelItem => contact.FullName)</h5>
-							<div class="fs-4">
+							<div class="d-flex align-items-center">
+								<h5 class="card-title flex-grow-1">@Html.DisplayFor(modelItem => contact.FullName)</h5>
 								<a class="me-3 editIcons" asp-action="EmailContact" asp-route-id="@contact.Id"><i class="bi bi-envelope-fill "></i></a>
+								<a href="tel:@contact.PhoneNumber"><i class="bi bi-telephone-fill"></i></a>
 							</div>
 						</div>
 					</div>

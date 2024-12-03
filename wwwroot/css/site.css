@@ -29,7 +29,7 @@ body {
 
 /*--Button Overrides --*/
 /*-- Button styles override Bootstrap Styles --*/
-.btn-outline-primary {
+/*.btn-outline-primary {
     color: var(--cf-dark-color);
     border-color: var(--cf-primaryColor) !important;
 }
@@ -39,7 +39,7 @@ body {
     .btn-outline-primary:focus {
         border-color: var(--cf-secondaryColor) !important;
         background-color: var(--cf-primaryColor);
-    }
+    }*/
 
 /*.btn-primary {
     color: white !important;
@@ -126,11 +126,11 @@ main {
 }
 
 .sideNav {
-    border-radius: 25px;
-    border-color: var(--cf-light-color);
-    border-style: solid;
-    border-width: 3px;
-    background-color: var(--cf-secondaryColor);
+    /*border-radius: 25px;*/
+    /*border-color: var(--cf-light-color);*/
+    /*border-style: solid;*/
+    /*border-width: 3px;*/
+    /*background-color: var(--bs-tertiary-color);*/
     padding-top: 2rem;
     padding-bottom: 2rem;
     padding-left: 1rem;
