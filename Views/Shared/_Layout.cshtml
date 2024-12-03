@@ -34,78 +34,77 @@
 	<link href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" rel="stylesheet">
 
 	<style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+		.bd-placeholder-img {
+			font-size: 1.125rem;
+			text-anchor: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+		}
 
 
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
+		.b-example-divider {
+			width: 100%;
+			height: 3rem;
+			background-color: rgba(0, 0, 0, .1);
+			border: solid rgba(0, 0, 0, .15);
+			border-width: 1px 0;
+			box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+		}
 
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
+		.b-example-vr {
+			flex-shrink: 0;
+			width: 1.5rem;
+			height: 100vh;
+		}
 
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
+		.bi {
+			vertical-align: -.125em;
+			fill: currentColor;
+		}
 
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
+		.nav-scroller {
+			position: relative;
+			z-index: 2;
+			height: 2.75rem;
+			overflow-y: hidden;
+		}
 
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
+			.nav-scroller .nav {
+				display: flex;
+				flex-wrap: nowrap;
+				padding-bottom: 1rem;
+				margin-top: -1px;
+				overflow-x: auto;
+				text-align: center;
+				white-space: nowrap;
+				-webkit-overflow-scrolling: touch;
+			}
 
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+		.btn-bd-primary {
+			--bd-violet-bg: #712cf9;
+			--bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+			--bs-btn-font-weight: 600;
+			--bs-btn-color: var(--bs-white);
+			--bs-btn-bg: var(--bd-violet-bg);
+			--bs-btn-border-color: var(--bd-violet-bg);
+			--bs-btn-hover-color: var(--bs-white);
+			--bs-btn-hover-bg: #6528e0;
+			--bs-btn-hover-border-color: #6528e0;
+			--bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+			--bs-btn-active-color: var(--bs-btn-hover-color);
+			--bs-btn-active-bg: #5a23c8;
+			--bs-btn-active-border-color: #5a23c8;
+		}
 
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
+		.bd-mode-toggle {
+			z-index: 1500;
+		}
 
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
-    </style>
+			.bd-mode-toggle .dropdown-menu .active .bi {
+				display: block !important;
+			}
+	</style>
 
 	<!--Bootstrap icons-->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -163,50 +162,55 @@
 	</div>
 	<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
 		<a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" asp-area="" asp-controller="Contacts" asp-action="Index">Kinext</a>
+		<ul class="navbar-nav flex-row d-md-none">
+			<li class="nav-item text-nowrap"> 
+				<button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+			</li>
+		</ul>
 	</header>
-	@* <main class="content" id="mainHero"> *@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
 				<div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-					<div class="offcanvas-header">
-						@* <img class="img-fluid" src="/img/Kinext.png"> *@
-						<h5 class="offcanvas-title" id="sidebarMenuLabel">Company name</h5>
+					<div class="offcanvas-header"> 
+						<h5 class="offcanvas-title" id="sidebarMenuLabel">Kinext</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
 					</div>
 					<div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-						
-					<div class="dropdown">
-						<a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-						</a>
-						<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-							<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/Identity/Account/Login">
-									<button type="submit" class="btn text-white btnlinks">Logout</button>
-								</form>
+
+						<div class="dropdown">
+							<a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+								<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+								<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li>
+									<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/Identity/Account/Login">
+										<button type="submit" class="btn text-white btnlinks">Logout</button>
+									</form>
+								</li>
+							</ul>
+						</div>
+						<hr>
+						<ul class="nav flex-column">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Contacts" asp-action="Index">Everyone</a>
 							</li>
-						</ul>
-					</div>
-					<hr>
-					<ul class="nav flex-column">
-						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Contacts" asp-action="Index">Everyone</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Groups</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">My Profile</a>
-						</li> 
-						<li class="nav-item">
-							<a class="nav-link fw-bold" asp-area="" asp-controller="Contacts" asp-action="Create">+ New Contact</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link fw-bold" asp-area="" asp-controller="Categories" asp-action="Create">+ New Group</a>
-						</li> 
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Groups</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">My Profile</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link fw-bold" asp-area="" asp-controller="Contacts" asp-action="Create">+ New Contact</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link fw-bold" asp-area="" asp-controller="Categories" asp-action="Create">+ New Group</a>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -214,10 +218,7 @@
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 				@RenderBody()
 				<hr />
-				<footer class="row align-items-center gy-2">
-					@* <div class="row align-items-center py-2"> *@
-					@* <div class="col"> *@
-					@* <div class="row align-items-center gy-2"> *@
+				<footer class="row align-items-center gy-2"> 
 					<div class="col d-flex justify-content-center justify-content-md-start order-last order-md-first copyright">
 						&copy; 2024 Chikere All Rights Reserved
 					</div>
@@ -228,20 +229,11 @@
 						<a href="https://www.linkedin.com/in/chikere-ezekannagha/" target="_blank" class="me-4 socialicons"><i class="bi bi-linkedin p-2 "></i></a>
 						<a href="https://x.com/chikeredev" target="_blank" class="me-4 socialicons"><i class="bi bi-twitter-x p-2"></i></a>
 						<a href="https://www.youtube.com/channel/UChSaNW2QTbPUafJjWegP9aA" target="_blank" class="me-4 socialicons"><i class="bi bi-youtube p-2"></i></a>
-						@* <div class="row"> *@
-							@* <div class="col d-flex justify-content-end"> *@
-		
-							@* </div> *@
-						@* </div> *@
 					</div>
-					@* </div> *@
-					@* </div> *@
-					@* </div> *@
 				</footer>
 			</main>
 		</div>
 	</div>
-	@* </main> *@
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
