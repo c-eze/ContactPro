@@ -86,15 +86,41 @@ namespace ContactPro.Services
 
         public async Task<List<Category>> GenerateCategories(AppUser user)
         {
-            if (user is not null)
+			string currentDirectory = Directory.GetCurrentDirectory().ToString();
+
+			if (user is not null)
             {
                 _categories = new List<Category>()
                 {
-                    new Category(){AppUserId = user.Id, Name = "Coworkers"},
-                    new Category(){AppUserId = user.Id, Name = "Family"},
-                    new Category(){AppUserId = user.Id, Name = "Friends"},
-					new Category(){AppUserId = user.Id, Name = "Business"},
-					new Category(){AppUserId = user.Id, Name = "Church"}
+                    new Category(){
+                        AppUserId = user.Id, 
+                        Name = "Coworkers",
+						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//work.png")),
+						ImageType = ".png" },
+
+                    new Category(){
+                        AppUserId = user.Id, 
+                        Name = "Family",
+						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//family.png")),
+						ImageType = ".png"},
+
+                    new Category(){
+                        AppUserId = user.Id, 
+                        Name = "Friends",
+						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//friends.png")),
+						ImageType = ".png"},
+
+					new Category(){
+                        AppUserId = user.Id, 
+                        Name = "Business",
+						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//business.png")),
+						ImageType = ".png"},
+
+					new Category(){
+                        AppUserId = user.Id, 
+                        Name = "Church",
+						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//church.png")),
+						ImageType = ".png"}
 				};
             }
 

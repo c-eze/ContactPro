@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<ContactPro.Models.Category>
+@using ContactPro.Services.Interfaces
+
+@inject IImageService ImageService
 
 @{
 	ViewData["Title"] = "Index";
@@ -9,23 +12,17 @@
 	@foreach (var category in Model)
 	{
 		<div class="col">
-			<div class="card mb-3" style="width: 18rem;">
+			<div class="card mb-3">
 				<a class="text-decoration-none" asp-action="Details" asp-route-id="@category.Id">
-					<div class="card-body text-center">
-						<h5 class="card-title">@category.Name</h5>
-						<p class="card-text">@category.Contacts.Count()</p>
-					</div>
+					<img class="card-img-top" src='@ImageService.ConvertByteArrayToFile(category.ImageData!, category.ImageType!)' alt="...">
 				</a>
-				<div class="card-footer">
+				<div class="card-body">
 					<ul class="d-flex justify-content-center list-unstyled">
-						<li class="me-3">
-							<a class="editIcons" asp-action="Edit" asp-route-id="@category.Id"><i class="bi bi-pencil-fill"></i></a>
-						</li>
-						<li class="me-3">
-							<a class="editIcons" asp-action="EmailCategory" asp-route-id="@category.Id"><i class="bi bi-envelope-fill"></i></a>
+						<li class="flex-grow-1">
+							<h5 class="card-title">@category.Name</h5>
 						</li>
 						<li>
-							<a class="editIcons text-danger" asp-action="Delete" asp-route-id="@category.Id"><i class="bi bi-trash-fill "></i></a>
+							<a class="editIcons" asp-action="EmailCategory" asp-route-id="@category.Id"><i class="bi bi-envelope-fill"></i></a>
 						</li>
 					</ul>
 				</div>
