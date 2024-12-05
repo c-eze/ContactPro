@@ -22,7 +22,7 @@
 							<h5 class="card-title">@category.Name</h5>
 						</li>
 						<li>
-							<a class="editIcons" asp-action="EmailCategory" asp-route-id="@category.Id"><i class="bi bi-envelope-fill"></i></a>
+							<a href="javascript:void(0);" class="anchorEmail" data-id="@category.Id"><i class="bi bi-envelope-fill"></i></a>
 						</li>
 					</ul>
 				</div>
@@ -31,25 +31,42 @@
 	}
 </div>
 
-@section scripts {
-	<!--Sweet Alerts-->
-	<script>
-		let message = '@(ViewBag.SwalMessage)';
+@* Email Category Modal *@
+<form asp-action="EmailCategory" method="post">
+	<div id="myModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div id="myModalContent" class="modal-content">
+			</div>
+		</div>
+	</div>
+</form>
 
-		if (!message.includes("Error") && message != '') {
-			Swal.fire({
-				backdrop: false,
-				icon: 'success',
-				title: message,
-				showConfirmButton: true
-			})
-		} else if (message.includes("Error")) {
-			Swal.fire({
-				backdrop: false,
-				icon: 'error',
-				title: 'Oops...',
-				text: message
-			})
-		}
-	</script>
+@section scripts {
+	<script>
+		var PostBackURL = "/Categories/EmailCategory";
+		$(function () {
+			$(".anchorEmail").click(function () { 
+				var $buttonClicked = $(this);
+				var id = $buttonClicked.attr("data-id");
+				var options = { "backdrop": "static", keyboard: true };
+
+				$.ajax({
+					type: "GET",
+					url: PostBackURL,
+					contentType: "application/json; charset=utf-8",
+					data: { "id": id },
+					datatype: "json",
+					success: function (data) {  
+						$('#myModalContent').html(data);
+						$('#myModal').modal(options);
+						$('#myModal').modal('show');
+					},
+					error: function () {
+						alert("Dynamic content load failed.");
+					}
+				});
+			});
+
+		}); 
+	</script> 
 }

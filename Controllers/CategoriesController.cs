@@ -73,34 +73,61 @@ namespace ContactPro.Controllers
 			return View(category);
 		}
 
+		//[Authorize]
+  //      public async Task<IActionResult> EmailCategory (int id)
+  //      {
+  //          string appUserId = _userManager.GetUserId(User);
+
+  //          Category category = await _context.Categories
+  //                                    .Include(c => c.Contacts)
+  //                                    .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+
+  //          List<string> emails = category.Contacts.Select(c => c.Email).ToList();
+
+  //          EmailData emailData = new EmailData()
+  //          {
+  //              GroupName = category.Name,
+  //              EmailAddress = String.Join(";", emails),
+  //              Subject = $"Group Message: {category.Name}"
+  //          };
+
+  //          EmailCategoryViewModel model = new EmailCategoryViewModel()
+  //          {
+  //              Contacts = category.Contacts.ToList(),
+  //              EmailData = emailData
+  //          };
+
+  //          return View(model);
+  //      }
+
 		[Authorize]
-        public async Task<IActionResult> EmailCategory (int id)
-        {
-            string appUserId = _userManager.GetUserId(User);
+		public async Task<IActionResult> EmailCategory(int id)
+		{
+			string appUserId = _userManager.GetUserId(User);
 
-            Category category = await _context.Categories
-                                      .Include(c => c.Contacts)
-                                      .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+			Category category = await _context.Categories
+									  .Include(c => c.Contacts)
+									  .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
 
-            List<string> emails = category.Contacts.Select(c => c.Email).ToList();
+			List<string> emails = category.Contacts.Select(c => c.Email).ToList();
 
-            EmailData emailData = new EmailData()
-            {
-                GroupName = category.Name,
-                EmailAddress = String.Join(";", emails),
-                Subject = $"Group Message: {category.Name}"
-            };
+			EmailData emailData = new EmailData()
+			{
+				GroupName = category.Name,
+				EmailAddress = String.Join(";", emails),
+				Subject = $"Group Message: {category.Name}"
+			};
 
-            EmailCategoryViewModel model = new EmailCategoryViewModel()
-            {
-                Contacts = category.Contacts.ToList(),
-                EmailData = emailData
-            };
+			EmailCategoryViewModel model = new EmailCategoryViewModel()
+			{
+				Contacts = category.Contacts.ToList(),
+				EmailData = emailData
+			};
 
-            return View(model);
-        }
+			return PartialView("_EmailCategory", model);
+		}
 
-        [Authorize]
+		[Authorize]
         [HttpPost]
         public async Task<IActionResult> EmailCategory (EmailCategoryViewModel ecvm)
         {
