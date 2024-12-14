@@ -134,7 +134,7 @@ namespace ContactPro.Controllers
                 EmailData = emailData
             };
 
-            return View(model);
+            return PartialView("_EmailContact", model);
         }
 
         // POST: EmailContact

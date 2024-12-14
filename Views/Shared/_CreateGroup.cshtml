@@ -1,0 +1,26 @@
+﻿@model ContactPro.Models.Category
+
+<form asp-action="Create" asp-controller="Categories" enctype="multipart/form-data" method="post">
+	<div class="modal fade" id="createGroupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="createGroupModalLabel">Create Group</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="form-group">
+						<label asp-for="Name" class="form-label">Enter a group name</label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-lg btn-primary">Create</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

@@ -33,7 +33,7 @@
 		</form>
 	</div>
 	<div class="col col-md-10">
-		<div class="row row-cols-1 row-cols-md-3 g-3">
+		<div class="row row-cols-2 row-cols-md-3 g-3">
 			@foreach (var contact in Model)
 			{
 				<div class="col">
@@ -42,10 +42,18 @@
 							<img class="card-img-top" src='@ImageService.ConvertByteArrayToFile(contact.ImageData!, contact.ImageType!)' alt="...">
 						</a>
 						<div class="card-body">
-							<div class="d-flex align-items-center">
+							<div class="d-flex flex-row align-items-baseline">
 								<h5 class="card-title flex-grow-1">@Html.DisplayFor(modelItem => contact.FullName)</h5>
-								<a class="me-3 editIcons" asp-action="EmailContact" asp-route-id="@contact.Id"><i class="bi bi-envelope-fill "></i></a>
-								<a href="tel:@contact.PhoneNumber"><i class="bi bi-telephone-fill"></i></a>
+								<a href="javascript:void(0);" class="anchorEmail me-3" data-id="@contact.Id">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+										<path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z" />
+									</svg>
+								</a> 
+								<a href="tel:@contact.PhoneNumber">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+									</svg>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -55,25 +63,42 @@
 	</div>
 </div>
 
-@section scripts {
-	<!--Sweet Alerts-->
-	<script>
-		let message = '@(ViewBag.SwalMessage)';
+@* Email Contact Modal *@
+<form asp-action="EmailContact" asp-controller="Contacts" method="post">
+	<div id="EmailContactModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div id="EmailContactModalContent" class="modal-content">
+			</div>
+		</div>
+	</div>
+</form>
 
-		if (!message.includes("Error") && message != '') {
-			Swal.fire({
-				backdrop: false,
-				icon: 'success',
-				title: message,
-				showConfirmButton: true
-			})
-		} else if (message.includes("Error")) {
-			Swal.fire({
-				backdrop: false,
-				icon: 'error',
-				title: 'Oops...',
-				text: message
-			})
-		}
+@section scripts {
+	<script>
+		var PostBackURL = "/Contacts/EmailContact";
+		$(function () {
+			$(".anchorEmail").click(function () {
+				var $buttonClicked = $(this);
+				var id = $buttonClicked.attr("data-id");
+				var options = { "backdrop": "static", keyboard: true };
+
+				$.ajax({
+					type: "GET",
+					url: PostBackURL,
+					contentType: "application/json; charset=utf-8",
+					data: { "id": id },
+					datatype: "json",
+					success: function (data) {
+						$('#EmailContactModalContent').html(data);
+						$('#EmailContactModal').modal(options);
+						$('#EmailContactModal').modal('show');
+					},
+					error: function () {
+						alert("Dynamic content load failed.");
+					}
+				});
+			});
+
+		});
 	</script>
 }
