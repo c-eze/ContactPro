@@ -151,9 +151,11 @@ namespace ContactPro.Controllers
         // GET: Categories/Create
         [Authorize]
         public IActionResult Create()
-        { 
-            return View();
-        }
+        {
+            Category model = new Category(); 
+
+			return PartialView("_CreateGroup", model);
+		}
 
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
