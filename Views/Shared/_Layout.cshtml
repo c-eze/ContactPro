@@ -196,8 +196,11 @@
 									Groups
 								</a>
 							</li>
+							</ul>
+							<hr />
+						<ul class="nav flex-column">
 							<li class="nav-item">
-								<a class="nav-link d-flex align-items-center gap-2" asp-controller="Contacts" asp-action="Create">
+								<a href="javascript:void(0);" class="newContact nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#newContactModal">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
 										<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
 										<path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
@@ -206,7 +209,7 @@
 								</a>
 							</li>
 							<li class="nav-item">
-								<a href="javascript:void(0);" class="newGroup nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+								<a href="javascript:void(0);" class="newGroup nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#newGroupModal">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
 										<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
 										<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
@@ -260,11 +263,21 @@
 		</div>
 	</div>
 
-	<!-- Create Group Modal -->
+	<!-- New Group Modal -->
 	<form asp-action="Create" asp-controller="Categories" enctype="multipart/form-data" method="post">
-		<div class="modal fade" id="newGroupModal" tabindex="-1" aria-labelledby="layoutModalLabel" aria-hidden="true"> 
+		<div class="modal fade" id="newGroupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newGroupModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div id="modalContent" class="modal-content">
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!-- New Contact Modal -->
+	<form asp-action="Create" asp-controller="Contacts" enctype="multipart/form-data" method="post">
+		<div class="modal fade" id="newContactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newContactModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div id="newContactModalContent" class="modal-content">
 				</div>
 			</div>
 		</div>
@@ -273,9 +286,29 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 	<script>
-		var CreateGroupURL = "/Categories/Create"; 
+		var CreateGroupURL = "/Categories/Create";
+		var NewContactURL = "/Contacts/Create";
 
 		$(function () {
+			$(".newContact").click(function () {
+				var options = { "backdrop": "static", keyboard: false };
+
+				$.ajax({
+					type: "GET",
+					url: NewContactURL,
+					contentType: "application/json; charset=utf-8",
+					datatype: "json",
+					success: function (data) {
+						$("#newContactModalContent").html(data);
+						$("#newContactModal").modal(options);
+						$("#newContactModal").modal("show");
+					},
+					error: function () {
+						alert("Dynamic content load failed.");
+					}
+				});
+			});
+
 			$(".newGroup").click(function () { 
 				var options = { "backdrop": "static", keyboard: true };
 

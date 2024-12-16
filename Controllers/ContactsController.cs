@@ -192,7 +192,7 @@ namespace ContactPro.Controllers
 
             ViewData["StatesList"] = new SelectList(Enum.GetValues(typeof(States)).Cast<States>().ToList());
             ViewData["CategoryList"] = new MultiSelectList(await _addressBookService.GetUserCategoriesAsync(appUserId), "Id", "Name");
-            return View();
+            return PartialView("_NewContact");
         }
 
         // POST: Contacts/Create
