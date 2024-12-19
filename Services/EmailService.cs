@@ -9,13 +9,18 @@ namespace ContactPro.Services
 {
     public class EmailService : IEmailSender
     {
+        #region Properties
         private readonly MailSettings _mailSettings;
+        #endregion
 
+        #region Constructor
         public EmailService(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
         }
+        #endregion
 
+        #region Send Email
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var emailSender = _mailSettings.Email ?? Environment.GetEnvironmentVariable("Email");
@@ -38,7 +43,7 @@ namespace ContactPro.Services
 
             //at this point let's log into our smtp client
             using SmtpClient smtpClient = new();
-            
+
             try
             {
                 var host = _mailSettings.MailHost ?? Environment.GetEnvironmentVariable("MailHost");
@@ -56,6 +61,7 @@ namespace ContactPro.Services
                 var error = ex.Message;
                 throw;
             }
-        }
+        } 
+        #endregion
     }
 }

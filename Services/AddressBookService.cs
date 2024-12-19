@@ -7,36 +7,43 @@ namespace ContactPro.Services
 {
 	public class AddressBookService : IAddressBookService
 	{
+		#region Properties
 		private readonly ApplicationDbContext _context;
+		#endregion
 
-		public AddressBookService(ApplicationDbContext context) 
+		#region Constructor
+		public AddressBookService(ApplicationDbContext context)
 		{
 			_context = context;
 		}
+		#endregion
 
+		#region Add Contact To Category
 		public async Task AddContactToCategoryAsync(int categoryId, int contactId)
 		{
 			try
 			{
-                //check to see if the category is in the contact
-                if (! await IsContactInCategory(categoryId, contactId))
-                {
+				//check to see if the category is in the contact
+				if (!await IsContactInCategory(categoryId, contactId))
+				{
 					Contact? contact = await _context.Contacts.FindAsync(contactId);
 					Category? category = await _context.Categories.FindAsync(categoryId);
 
-                    if (category != null && contact != null)
-                    {
+					if (category != null && contact != null)
+					{
 						category.Contacts.Add(contact);
 						await _context.SaveChangesAsync();
-                    }
-                }
-            }
+					}
+				}
+			}
 			catch (Exception)
 			{
 				throw;
 			}
 		}
+		#endregion
 
+		#region Get Contact Categories
 		public async Task<ICollection<Category>> GetContactCategoriesAsync(int contactId)
 		{
 			try
@@ -44,28 +51,32 @@ namespace ContactPro.Services
 				Contact? contact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == contactId);
 				return contact.Categories;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				throw;
 			}
 		}
+		#endregion
 
+		#region Get Contact Category Ids
 		public async Task<ICollection<int>> GetContactCategoryIdsAsync(int contactId)
 		{
 			try
 			{
 				var contact = await _context.Contacts.Include(c => c.Categories)
-													 .FirstOrDefaultAsync(c => c.Id  == contactId);
-				
+													 .FirstOrDefaultAsync(c => c.Id == contactId);
+
 				List<int> categoryIds = contact.Categories.Select(c => c.Id).ToList();
 				return categoryIds;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				throw;
 			}
 		}
+		#endregion
 
+		#region Get User Categories
 		public async Task<IEnumerable<Category>> GetUserCategoriesAsync(string userId)
 		{
 			List<Category> categories = new List<Category>();
@@ -83,7 +94,9 @@ namespace ContactPro.Services
 
 			return categories;
 		}
+		#endregion
 
+		#region Is Contact In Category
 		public async Task<bool> IsContactInCategory(int categoryId, int contactId)
 		{
 			Contact? contact = await _context.Contacts.FindAsync(contactId);
@@ -93,32 +106,37 @@ namespace ContactPro.Services
 								 .Where(c => c.Id == categoryId && c.Contacts.Contains(contact))
 								 .AnyAsync();
 		}
+		#endregion
 
+		#region Remove Contact From Category
 		public async Task RemoveContactFromCategoryAsync(int categoryId, int contactId)
 		{
 			try
 			{
-                if (await IsContactInCategory(categoryId, contactId))
-                {
+				if (await IsContactInCategory(categoryId, contactId))
+				{
 					Contact contact = await _context.Contacts.FindAsync(contactId);
 					Category category = await _context.Categories.FindAsync(categoryId);
 
-                    if (category != null && contact != null)
-                    {
-                        category.Contacts.Remove(contact);
+					if (category != null && contact != null)
+					{
+						category.Contacts.Remove(contact);
 						await _context.SaveChangesAsync();
-                    }
-                }
-            }
+					}
+				}
+			}
 			catch (Exception)
 			{
 				throw;
 			}
 		}
+		#endregion
 
+		#region Search For Contacts
 		public IEnumerable<Contact> SearchForContacts(string searchString, string userId)
 		{
 			throw new NotImplementedException();
-		}
+		} 
+		#endregion
 	}
 }

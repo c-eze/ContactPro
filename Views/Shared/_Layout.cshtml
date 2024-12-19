@@ -196,8 +196,8 @@
 									Groups
 								</a>
 							</li>
-							</ul>
-							<hr />
+						</ul>
+						<hr />
 						<ul class="nav flex-column">
 							<li class="nav-item">
 								<a href="javascript:void(0);" class="newContact nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#newContactModal">
@@ -309,13 +309,13 @@
 				});
 			});
 
-			$(".newGroup").click(function () { 
+			$(".newGroup").click(function () {
 				var options = { "backdrop": "static", keyboard: true };
 
 				$.ajax({
 					type: "GET",
 					url: CreateGroupURL,
-					contentType: "application/json; charset=utf-8", 
+					contentType: "application/json; charset=utf-8",
 					datatype: "json",
 					success: function (data) {
 						$("#modalContent").html(data);
@@ -329,7 +329,7 @@
 			});
 
 		});
-	 </script>
+	</script>
 
 	<!-- Bootstrap JS -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

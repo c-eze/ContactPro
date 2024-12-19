@@ -31,6 +31,8 @@ builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IAddressBookService, AddressBookService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IAppUserService, AppUserService>();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 

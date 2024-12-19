@@ -7,27 +7,34 @@ namespace ContactPro.Services
 {
     public class DataService
     {
+        #region Properties
         private List<Contact> _contacts;
         private List<Category> _categories;
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _configuration;
+        #endregion
 
+        #region Constructor
         public DataService(ApplicationDbContext dbContext,
-                           UserManager<AppUser> userManager,
-                           IConfiguration configuration)
+                          UserManager<AppUser> userManager,
+                          IConfiguration configuration)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _configuration = configuration;
         }
+        #endregion
 
+        #region Manage Data
         public async Task ManageDataAsync()
         {
             //Task 2: Seed a few users into the system
             await SeedUsersAsync();
         }
+        #endregion
 
+        #region Seed Users
         private async Task SeedUsersAsync()
         {
             //If there are already users in the system, do nothing. 
@@ -45,7 +52,7 @@ namespace ContactPro.Services
                 LastName = "DemoAdmin",
                 PhoneNumber = "(800)555-1212",
                 EmailConfirmed = true
-            }; 
+            };
 
             var demoUser = new AppUser()
             {
@@ -83,50 +90,54 @@ namespace ContactPro.Services
 
             await _dbContext.SaveChangesAsync();
         }
+        #endregion
 
+        #region Generate Categories
         public async Task<List<Category>> GenerateCategories(AppUser user)
         {
-			string currentDirectory = Directory.GetCurrentDirectory().ToString();
+            string currentDirectory = Directory.GetCurrentDirectory().ToString();
 
-			if (user is not null)
+            if (user is not null)
             {
                 _categories = new List<Category>()
                 {
                     new Category(){
-                        AppUserId = user.Id, 
+                        AppUserId = user.Id,
                         Name = "Coworkers",
-						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//work.png")),
-						ImageType = ".png" },
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//work.png")),
+                        ImageType = ".png" },
 
                     new Category(){
-                        AppUserId = user.Id, 
+                        AppUserId = user.Id,
                         Name = "Family",
-						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//family.png")),
-						ImageType = ".png"},
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//family.png")),
+                        ImageType = ".png"},
 
                     new Category(){
-                        AppUserId = user.Id, 
+                        AppUserId = user.Id,
                         Name = "Friends",
-						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//friends.png")),
-						ImageType = ".png"},
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//friends.png")),
+                        ImageType = ".png"},
 
-					new Category(){
-                        AppUserId = user.Id, 
+                    new Category(){
+                        AppUserId = user.Id,
                         Name = "Business",
-						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//business.png")),
-						ImageType = ".png"},
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//business.png")),
+                        ImageType = ".png"},
 
-					new Category(){
-                        AppUserId = user.Id, 
+                    new Category(){
+                        AppUserId = user.Id,
                         Name = "Church",
-						ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//church.png")),
-						ImageType = ".png"}
-				};
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//church.png")),
+                        ImageType = ".png"}
+                };
             }
 
             return _categories;
         }
+        #endregion
 
+        #region Generate Contracts
         private async Task<List<Contact>> GenerateContacts(AppUser user)
         {
             string currentDirectory = Directory.GetCurrentDirectory().ToString();
@@ -144,11 +155,11 @@ namespace ContactPro.Services
                         State = Enums.States.TX,
                         Email = "jsmith@mailinator.com",
                         ZipCode = 21000,
-                        PhoneNumber = "8005552342", 
-                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//6.png")), 
+                        PhoneNumber = "8005552342",
+                        ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//6.png")),
                         ImageType = ".png" },
 
-                    
+
                     new Contact() {
                         AppUserID = user.Id,
                         FirstName = "Ty",
@@ -173,7 +184,7 @@ namespace ContactPro.Services
                         State = Enums.States.FL,
                         Email = "gtorres@mailinator.com",
                         ZipCode = 33054,
-                        PhoneNumber = "8005559592", 
+                        PhoneNumber = "8005559592",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//10.png")),
                         ImageType = ".png" },
 
@@ -233,7 +244,7 @@ namespace ContactPro.Services
                         ZipCode = 40601,
                         PhoneNumber = "8005553245",
                         ImageData = File.ReadAllBytes(Path.Combine(currentDirectory, "wwwroot//img//3.png")),
-                        ImageType = ".png" }, 
+                        ImageType = ".png" },
 
                     new Contact() {
                         AppUserID = user.Id,
@@ -252,6 +263,7 @@ namespace ContactPro.Services
             }
 
             return _contacts;
-        }
+        } 
+        #endregion
     }
 }

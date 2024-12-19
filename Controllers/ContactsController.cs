@@ -19,27 +19,30 @@ namespace ContactPro.Controllers
 {
     public class ContactsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly IImageService _imageService;
         private readonly IAddressBookService _addressBookService;
         private readonly IEmailSender _emailService;
+        private readonly IContactService _contactService;
+        private readonly IAppUserService _userService;
 
-        public ContactsController(ApplicationDbContext context, 
-                                  UserManager<AppUser> userManager,
-                                  IImageService imageService,
-                                  IAddressBookService addressBookService,
-                                  IEmailSender emailService)
-        {
-            _context = context;
-            _userManager = userManager;
-            _imageService = imageService;
-            _addressBookService = addressBookService;
-            _emailService = emailService;
-        }
+		public ContactsController(UserManager<AppUser> userManager,
+								  IImageService imageService,
+								  IAddressBookService addressBookService,
+								  IEmailSender emailService,
+								  IContactService contactService,
+								  IAppUserService userService)
+		{ 
+			_userManager = userManager;
+			_imageService = imageService;
+			_addressBookService = addressBookService;
+			_emailService = emailService;
+			_contactService = contactService;
+			_userService = userService;
+		}
 
-        // GET: Contacts
-        [Authorize]
+		// GET: Contacts
+		[Authorize]
         public IActionResult Index(int categoryId, string swalMessage = null)
         {
             ViewData["SwalMessage"] = swalMessage;
@@ -47,19 +50,17 @@ namespace ContactPro.Controllers
             var contacts = new List<Contact>();
             string appUserId = _userManager.GetUserId(User);
 
-            //return the userID and its associated contacts and categories
-            AppUser? appUser = _context.Users
-                                      .Include(c => c.Contacts)
-                                      .ThenInclude(c => c.Categories)
-                                      .FirstOrDefault(u => u.Id == appUserId);
+			//return the user and its associated contacts and categories
+			AppUser? appUser = _userService.GetUserByIdAsync(appUserId);
 
-            var categories = appUser.Categories;
+			var categories = appUser.Categories;
 
             if (categoryId == 0)
             {
-                contacts = appUser.Contacts.OrderBy(c => c.LastName)
-                                       .ThenBy(c => c.FirstName)
-                                       .ToList();
+                contacts = appUser.Contacts
+                                  .OrderBy(c => c.LastName)
+                                  .ThenBy(c => c.FirstName)
+                                  .ToList();
 
             }
             else
@@ -83,12 +84,9 @@ namespace ContactPro.Controllers
             string appUserId = _userManager.GetUserId(User);
             var contacts = new List<Contact>();
 
-            AppUser? appUser = _context.Users
-                                      .Include(c => c.Contacts)
-                                      .ThenInclude(c => c.Categories)
-                                      .FirstOrDefault(u => u.Id == appUserId);
+			AppUser? appUser = _userService.GetUserByIdAsync(appUserId);
 
-            if (String.IsNullOrEmpty(searchString))
+			if (String.IsNullOrEmpty(searchString))
             {
                 contacts = appUser.Contacts
                                   .OrderBy(c => c.LastName)
@@ -113,10 +111,9 @@ namespace ContactPro.Controllers
         public async Task<IActionResult> EmailContact(int id)
         {
             string appUserId = _userManager.GetUserId(User);
-            Contact? contact = await _context.Contacts.Where(c => c.Id == id && c.AppUserID == appUserId)
-                                                     .FirstOrDefaultAsync();
+			var contact = await _contactService.GetContactByUserIdAsync(id, appUserId);
 
-            if (contact == null)
+			if (contact == null)
             {
                 return NotFound();
             }
@@ -161,15 +158,13 @@ namespace ContactPro.Controllers
         // GET: Contacts/Details/5
         [Authorize]
         public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Contacts == null)
+		{
+			if (id == null) 
             {
                 return NotFound();
             }
 
-            var contact = await _context.Contacts
-                .Include(c => c.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var contact = await _contactService.GetContactByIdAsync(id.Value); 
 
             if (contact == null)
             {
@@ -220,8 +215,7 @@ namespace ContactPro.Controllers
                     contact.ImageType = contact.ImageFile.ContentType;
                 }
 
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
+                await _contactService.AddNewContactAsync(contact);
 
                 //loop over all the selected categories
                 foreach (int categoryId in CategoryList)
@@ -239,16 +233,13 @@ namespace ContactPro.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Contacts == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             string appUserId = _userManager.GetUserId(User);
-
-            //var contact = await _context.Contacts.FindAsync(id);
-            var contact = await _context.Contacts.Where(c => c.Id == id && c.AppUserID == appUserId)
-                                                 .FirstOrDefaultAsync();
+            var contact = await _contactService.GetContactByUserIdAsync(id.Value, appUserId);
 
             if (contact == null)
             {
@@ -288,10 +279,9 @@ namespace ContactPro.Controllers
                     {
                         contact.ImageData = await _imageService.ConvertFileToByteArrayAsync(contact.ImageFile);
                         contact.ImageType = contact.ImageFile.ContentType;
-                    }
+                    } 
 
-                    _context.Update(contact);
-                    await _context.SaveChangesAsync();
+                    await _contactService.UpdateContactAsync(contact);
 
                     //save our categories
                     //remove the current categories
@@ -310,7 +300,7 @@ namespace ContactPro.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContactExists(contact.Id))
+                    if (!await ContactExists(contact.Id))
                     {
                         return NotFound();
                     }
@@ -320,8 +310,9 @@ namespace ContactPro.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["AppUserID"] = new SelectList(_context.Users, "Id", "Id", contact.AppUserID);
+            } 
+
+			ViewData["AppUserID"] = new SelectList(_userService.GetAllUsers(), "Id", "Id", contact.AppUserID);
             return View(contact);
         }
 
@@ -329,16 +320,15 @@ namespace ContactPro.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Contacts == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             string appUserId = _userManager.GetUserId(User);
+			var contact = await _contactService.GetContactByUserIdAsync(id.Value, appUserId);
 
-            var contact = await _context.Contacts 
-                               .FirstOrDefaultAsync(c => c.Id == id && c.AppUserID == appUserId);
-            if (contact == null)
+			if (contact == null)
             {
                 return NotFound();
             }
@@ -352,21 +342,19 @@ namespace ContactPro.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             string appUserId = _userManager.GetUserId(User);
+			var contact = await _contactService.GetContactByUserIdAsync(id, appUserId);
 
-            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.AppUserID == appUserId);
-
-            if (contact != null)
+			if (contact != null)
             {
-                _context.Contacts.Remove(contact);
-                await _context.SaveChangesAsync();
+                await _contactService.RemoveContactAsync(contact);
             }
             
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContactExists(int id)
+        private async Task<bool> ContactExists(int id)
         {
-          return (_context.Contacts?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (await _contactService.GetAllContactsAsync()).Any(e => e.Id == id);
         }
     }
 }
