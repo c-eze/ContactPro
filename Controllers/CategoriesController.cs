@@ -12,36 +12,34 @@ using ContactPro.Models;
 using ContactPro.Models.ViewModels;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ContactPro.Enums;
+using ContactPro.Services.Interfaces;
 
 namespace ContactPro.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailService;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context,
-                                    UserManager<AppUser> userManager,
-                                    IEmailSender emailService)
-        {
-            _context = context;
-            _userManager = userManager;
-            _emailService = emailService;
-        }
+		public CategoriesController(UserManager<AppUser> userManager,
+									IEmailSender emailService,
+									ICategoryService categoryService)
+		{
+			_userManager = userManager;
+			_emailService = emailService;
+			_categoryService = categoryService;
+		}
 
-        // GET: Categories
-        [Authorize]
+		// GET: Categories
+		[Authorize]
         public async Task<IActionResult> Index(string swalMessage = null)
         {
             ViewData["SwalMessage"] = swalMessage;
 
             string appUserId = _userManager.GetUserId(User);
 
-            var categories = await _context.Categories.Where(c => c.AppUserId == appUserId)
-                                                .Include(c => c.AppUser)
-												.Include(c => c.Contacts)
-												.ToListAsync();
+            var categories = await _categoryService.GetCategoriesByUserIdAsync(appUserId);
             
             return View(categories);
         }
@@ -50,16 +48,14 @@ namespace ContactPro.Controllers
 		[Authorize]
 		public async Task<IActionResult> Details(int? id)
 		{
-			if (id == null || _context.Categories == null)
+			if (id == null)
 			{
 				return NotFound();
 			}
 
 			string appUserId = _userManager.GetUserId(User);
 
-			Category category = await _context.Categories
-									  .Include(c => c.Contacts)
-									  .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+			Category category = await _categoryService.GetCategoryByUserIdAsync(appUserId, id.Value);
 
 			if (category == null)
 			{
@@ -74,9 +70,7 @@ namespace ContactPro.Controllers
 		{
 			string appUserId = _userManager.GetUserId(User);
 
-			Category category = await _context.Categories
-									  .Include(c => c.Contacts)
-									  .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+			Category category = await _categoryService.GetCategoryByUserIdAsync(appUserId, id);
 
 			List<string> emails = category.Contacts.Select(c => c.Email).ToList();
 
@@ -139,8 +133,8 @@ namespace ContactPro.Controllers
             {
                 string appUserId = _userManager.GetUserId(User);
                 category.AppUserId = appUserId;
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+
+                await _categoryService.AddNewCategoryAsync(category);
                 return RedirectToAction(nameof(Index));
             } 
             return View(category);
@@ -156,11 +150,9 @@ namespace ContactPro.Controllers
             }
 
             string appUserId = _userManager.GetUserId(User);
+            var category = await _categoryService.GetCategoryByUserIdAsync(appUserId, id.Value);
 
-            var category = await _context.Categories.Where(c => c.Id == id && c.AppUserId == appUserId)
-                                                    .FirstOrDefaultAsync();
-
-            if (category == null)
+			if (category == null)
             {
                 return NotFound();
             }
@@ -185,13 +177,11 @@ namespace ContactPro.Controllers
                 try
                 {
                     string appUserId = _userManager.GetUserId(User);
-                    category.AppUserId = appUserId;
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await _categoryService.UpdateCategoryAsync(appUserId, category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!await CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -209,15 +199,15 @@ namespace ContactPro.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             string appUserId = _userManager.GetUserId(User);
 
-            var category = await _context.Categories 
-                .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+            var category = await _categoryService.GetCategoryByUserIdAsync(appUserId, id.Value);
+
             if (category == null)
             {
                 return NotFound();
@@ -233,20 +223,19 @@ namespace ContactPro.Controllers
         {
             string appUserId = _userManager.GetUserId(User);
 
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == appUserId);
+			var category = await _categoryService.GetCategoryByUserIdAsync(appUserId, id);
 
-            if (category != null)
+			if (category != null)
             {
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                await _categoryService.RemoveCategoryAsync(category);
             }
             
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (await _categoryService.GetAllCategoriesAsync()).Any(e => e.Id == id);
         }
     }
 }

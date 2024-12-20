@@ -21,16 +21,32 @@ public class AppUserService : IAppUserService
 	#region Get All Users
 	public IEnumerable<AppUser> GetAllUsers()
 	{
-		return _context.Users;
+		try
+		{
+			return _context.Users;
+		}
+		catch (Exception)
+		{
+
+			throw;
+		}
 	}
 	#endregion
 
 	#region Get User By Id 
 	public AppUser GetUserByIdAsync(string userId)
 	{
-		return _context.Users.Include(c => c.Contacts)
-							 .ThenInclude(c => c.Categories)
-							 .FirstOrDefault(u => u.Id == userId);
+		try
+		{
+			return _context.Users.Include(c => c.Contacts)
+								 .ThenInclude(c => c.Categories)
+								 .FirstOrDefault(u => u.Id == userId);
+		}
+		catch (Exception)
+		{
+
+			throw;
+		}
 	}
 	#endregion
 }
